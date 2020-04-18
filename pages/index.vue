@@ -46,6 +46,18 @@
         />
       </v-col>
       <v-col cols="12" md="6" class="DataCard">
+        <!-- 区市町村別患者数 -->
+        <data-table
+          :title="'陽性患者数（区市町村別）'"
+          :title-id="'confirmed-cases-by-municipalities'"
+          :chart-data="municipalitiesTable"
+          :chart-option="{}"
+          :date="Data.patients.date"
+          :info="sumInfoOfPatients"
+          :url="'https://ckan.open-governmentdata.org/dataset/401000_pref_fukuoka_covid19_patients'"
+        />
+      </v-col>
+      <v-col cols="12" md="6" class="DataCard">
         <time-bar-chart
           title="検査実施数"
           :title-id="'number-of-tested'"
@@ -117,6 +129,7 @@ import MetroData from '@/data/metro.json'
 import DataTable from '@/components/DataTable.vue'
 import formatGraph from '@/utils/formatGraph'
 import formatTable from '@/utils/formatTable'
+import formatMunicipalitiesTable from '@/utils/formatMunicipalitiesTable'
 import formatConfirmedCases from '@/utils/formatConfirmedCases'
 import News from '@/data/news.json'
 import SvgCard from '@/components/SvgCard.vue'
@@ -139,6 +152,9 @@ export default {
     const patientsGraph = formatGraph(Data.patients_summary.data)
     // 感染者数
     const patientsTable = formatTable(Data.patients.data)
+    // 陽性患者数（区市町村別）
+    const municipalitiesTable = formatMunicipalitiesTable(Data.patients.data)
+
     // 退院者グラフ
     const dischargesGraph = formatGraph(Data.discharges_summary.data)
 
@@ -179,6 +195,7 @@ export default {
     const data = {
       Data,
       patientsTable,
+      municipalitiesTable,
       patientsGraph,
       dischargesGraph,
       testedGraph,
