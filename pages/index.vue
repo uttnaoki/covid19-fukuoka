@@ -46,12 +46,15 @@
         />
       </v-col>
       <v-col cols="12" md="6" class="DataCard">
-        <time-bar-chart
+        <time-stacked-bar-chart
           title="検査実施数"
           :title-id="'number-of-tested'"
           :chart-id="'time-bar-chart-tested'"
-          :chart-data="testedGraph"
+          :chart-data="testedGraph.cumulative"
           :date="Data.tested.date"
+          :items="testedGraph.items"
+          :labels="testedGraph.labels"
+          :data-labels="testedGraph.items" 
           :unit="'件'"
           :url="'https://ckan.open-governmentdata.org/dataset/401000_pref_fukuoka_covid19_exam'"
         />
@@ -116,6 +119,7 @@ import Data from '@/data/data.json'
 import MetroData from '@/data/metro.json'
 import DataTable from '@/components/DataTable.vue'
 import formatGraph from '@/utils/formatGraph'
+import formatTestedGraph from '@/utils/formatTestedGraph'
 import formatTable from '@/utils/formatTable'
 import formatConfirmedCases from '@/utils/formatConfirmedCases'
 import News from '@/data/news.json'
@@ -142,8 +146,8 @@ export default {
     // 退院者グラフ
     const dischargesGraph = formatGraph(Data.discharges_summary.data)
 
-    // 検査件数
-    const testedGraph = formatGraph(Data.tested.data)
+    // 検査実施件数
+    const testedGraph = formatTestedGraph(Data.tested.data)
     // 相談件数
     const contactsGraph = formatGraph(Data.contacts.data)
     // 帰国者・接触者電話相談センター相談件数
