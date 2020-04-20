@@ -27,6 +27,21 @@ export default (data: DataType[]) => {
     headers,
     datasets: []
   }
+
+  tableMunicipalities.datasets.push(
+    {
+      '居住地': '福岡市',
+      '陽性患者数': 0
+    },
+    {
+      '居住地': '北九州市',
+      '陽性患者数': 0
+    },
+    {
+      '居住地': '福岡県（それ以外）',
+      '陽性患者数': 0
+    }
+  )
   
   let municipalities: { [key: string]: number; } = {};
   data.forEach(d => {
@@ -36,15 +51,15 @@ export default (data: DataType[]) => {
     } else {
       municipalities[d['居住地']] = 1;
     }
+    if (d['居住地'].indexOf('福岡市') > -1) {
+      tableMunicipalities.datasets[0]['陽性患者数'] += 1;
+    } else if (d['居住地'].indexOf('北九州市') > -1) {
+      tableMunicipalities.datasets[1]['陽性患者数'] += 1;
+    } else {
+      tableMunicipalities.datasets[2]['陽性患者数'] += 1;
+    }
+
   })
 
-  for (let key in municipalities) {
-    tableMunicipalities.datasets.push({
-      "居住地": key,
-      "陽性患者数": municipalities[key]
-    });
-  }
-  
-  tableMunicipalities.datasets.sort((a, b) => (a === b ? 0 : a < b ? 1 : -1))
   return tableMunicipalities
 }
